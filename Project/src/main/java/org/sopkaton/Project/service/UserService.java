@@ -1,13 +1,19 @@
 package org.sopkaton.Project.service;
 
 import lombok.RequiredArgsConstructor;
+import org.sopkaton.Project.domain.Post;
 import org.sopkaton.Project.domain.User;
 import org.sopkaton.Project.dto.response.UserGetResponse;
+import org.sopkaton.Project.dto.response.UserPostGetResponse;
 import org.sopkaton.Project.repository.NicknameGenerationJpaRepository;
+import org.sopkaton.Project.repository.PostRepository;
 import org.sopkaton.Project.repository.UserJpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -16,6 +22,7 @@ import java.util.Random;
 public class UserService {
 
     private final UserJpaRepository userJpaRepository;
+    private final PostRepository postRepository;
     private final NicknameGenerationJpaRepository nicknameGenerationJpaRepository;
 
     private final int NICKNAME_NUM = 5;
@@ -28,11 +35,19 @@ public class UserService {
         return UserGetResponse.of(user);
     }
 
-    public UserGetResponse getUserBySsaId(String ssaId){
+    public UserPostGetResponse getUserBySsaId(String ssaId){
         User user = userJpaRepository.findById(ssaId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다. ssaId = " + ssaId));
 
-        return UserGetResponse.of(user);
+        List<Post> posts = postRepository.findByUser(userJpaRepository.findById(ssaId).get());
+
+        // createdDateTime을 기준으로 내림차순으로 정렬하는 Comparator 생성
+        Comparator<Post> dateTimeComparator = Comparator.comparing(Post::getCreatedDateTime).reversed();
+
+        // 리스트를 createdDateTime을 기준으로 내림차순으로 정렬
+        Collections.sort(posts, dateTimeComparator);
+
+        return UserPostGetResponse.of(user, posts);
     }
 
     private User createUser(String ssaId){
