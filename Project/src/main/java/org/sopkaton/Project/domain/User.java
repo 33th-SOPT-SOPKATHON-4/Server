@@ -1,4 +1,4 @@
-package org.sopkaton.Project;
+package org.sopkaton.Project.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

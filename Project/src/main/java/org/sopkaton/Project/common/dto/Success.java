@@ -11,7 +11,7 @@ public enum Success {
 	/**
 	 * 201 CREATED
 	 */
-	CREATE_SUCCESS(HttpStatus.CREATED, "생성 성공"),
+	CREATE_SUCCESS(HttpStatus.CREATED, "유저 로그인 성공"),
 
 
 	/**
