@@ -10,8 +10,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    @Query("SELECT p.postId FROM Post p WHERE p.user = :user")
-    List<Long> findPostIdByUser(User user);
+    @Query("SELECT p FROM Post p WHERE p.user = :user")
+    List<Post> findPostIdByUser(User user);
 
     @Modifying
     @Query("UPDATE Post p SET p.postDislikeCount = p.postDislikeCount +1 WHERE p.postId = :postId")
