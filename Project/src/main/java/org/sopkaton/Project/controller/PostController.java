@@ -2,12 +2,14 @@ package org.sopkaton.Project.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.sopkaton.Project.common.ApiResponse;
+import org.sopkaton.Project.common.dto.Success;
+import org.sopkaton.Project.dto.request.DIslikePostRequest;
 import org.sopkaton.Project.service.PostService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import static org.sopkaton.Project.common.dto.Success.CREATE_SUCCESS;
-import static org.sopkaton.Project.common.dto.Success.GET_SUCCESS;
+import static org.sopkaton.Project.common.dto.Success.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,5 +26,13 @@ public class PostController {
                                   @RequestPart String postContent,
                                   @RequestPart MultipartFile postImg) throws Exception {
         return ApiResponse.success(CREATE_SUCCESS, postService.createPost(ssaId, postContent, postImg));
+    }
+
+    @PostMapping("/{ssaId}/dislike")
+    public ApiResponse dislikePosts(@PathVariable String ssaId, @RequestBody DIslikePostRequest dIslikePostRequest){
+
+        postService.dislikePosts(ssaId, dIslikePostRequest.postIdList());
+
+        return ApiResponse.success(DISLIKE_POST_SUCCESS);
     }
 }

@@ -12,13 +12,14 @@ public enum Success {
 	 * 201 CREATED
 	 */
 	CREATE_SUCCESS(HttpStatus.CREATED, "유저 로그인 성공"),
+	DISLIKE_POST_SUCCESS(HttpStatus.OK, "게시물 질투나요 성공"),
 
 
 	/**
 	 * 200 OK
 	 */
 
-	GET_SUCCESS(HttpStatus.CREATED, "조회 성공"),
+	GET_SUCCESS(HttpStatus.OK, "조회 성공"),
 
 	/**
 	 * 204 NO_CONTENT
