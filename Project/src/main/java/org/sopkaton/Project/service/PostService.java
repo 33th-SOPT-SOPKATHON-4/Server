@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.sopkaton.Project.domain.Post;
 import org.sopkaton.Project.domain.User;
 import org.sopkaton.Project.domain.UserPostInteractions;
+import org.sopkaton.Project.dto.response.PostGetResponse;
 import org.sopkaton.Project.external.S3Service;
 import org.sopkaton.Project.repository.PostRepository;
 import org.sopkaton.Project.repository.UserPostInteractionsRepository;
@@ -48,7 +49,7 @@ public class PostService {
         return post;
     }
 
-    public List<Post> getPostsByUser(String ssaId) {
+    public List<PostGetResponse> getPostsByUser(String ssaId) {
         ArrayList<Post> postList = new ArrayList<>();
         List<Long> postIdList = getRandomPostId(ssaId);
 
@@ -57,7 +58,7 @@ public class PostService {
             postList.add(post);
         }
 
-        return postList;
+        return postList.stream().map(PostGetResponse::of).toList();
 
     }
 
