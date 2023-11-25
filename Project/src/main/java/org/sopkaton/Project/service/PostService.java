@@ -15,7 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,9 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final UserPostInteractionsRepository userPostInteractionsRepository;
+
+    Random random = new Random();
+
 
     public Post createPost(String ssaId, String postContent, MultipartFile postImg) throws Exception {
         String imgUrl = s3Service.uploadImage("post/", postImg);
@@ -44,7 +49,16 @@ public class PostService {
     }
 
     public List<Post> getPostsByUser(String ssaId) {
-        return postRepository.findByUser(userRepository.findById(ssaId).get());
+        ArrayList<Post> postList = new ArrayList<>();
+        List<Long> postIdList = getRandomPostId(ssaId);
+
+        for (Long postId : postIdList){
+            Post post = postRepository.findById(postId).orElseThrow( () -> new EntityNotFoundException("없는 게시물입니다."));
+            postList.add(post);
+        }
+
+        return postList;
+
     }
 
     @Transactional
@@ -55,5 +69,23 @@ public class PostService {
             userRepository.updateDislikeCount(post.getUser().getSsaId());
             UserPostInteractions postInteractions = userPostInteractionsRepository.save(UserPostInteractions.builder().postId(postId).ssaId(ssaId).build());
         }
+    }
+
+    private List<Long> getRandomPostId(String ssaId){
+        ArrayList<Long> postIdList = new ArrayList<>();
+
+        int postSize = postRepository.findAll().size();
+
+        List<Long> userPostIdList = postRepository.findPostIdByUser(userRepository.findById(ssaId).get());
+        List<Long> dislikePostList = userPostInteractionsRepository.findDislikePostByUser(ssaId);
+
+        while(postIdList.size()<12){
+            Long randomInt = random.nextLong(postSize)+1;
+            if (!userPostIdList.contains(randomInt) && !postIdList.contains(randomInt) &&!dislikePostList.contains(randomInt)) {
+                postIdList.add(randomInt);
+            }
+        }
+
+        return postIdList;
     }
 }

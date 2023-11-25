@@ -33,6 +33,6 @@ public class PostController {
 
         postService.dislikePosts(ssaId, dIslikePostRequest.postIdList());
 
-        return ApiResponse.success(DISLIKE_POST_SUCCESS);
+        return ApiResponse.success(Success.DISLIKE_POST_SUCCESS);
     }
 }
