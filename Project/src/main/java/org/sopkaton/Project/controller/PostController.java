@@ -7,16 +7,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import static org.sopkaton.Project.common.dto.Success.CREATE_SUCCESS;
+import static org.sopkaton.Project.common.dto.Success.GET_SUCCESS;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping()
 public class PostController {
     private final PostService postService;
 
     @GetMapping("/{ssaId}/posts")
     public ApiResponse getPostsByUser(@PathVariable String ssaId) {
-        return ApiResponse.success(CREATE_SUCCESS, postService.getPostsByUser(ssaId));
+        return ApiResponse.success(GET_SUCCESS, postService.getPostsByUser(ssaId));
     }
 
     @PostMapping("/{ssaId}/post")

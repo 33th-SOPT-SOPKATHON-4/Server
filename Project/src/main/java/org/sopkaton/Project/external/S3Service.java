@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.PutObjectResponse;
 
 import java.io.IOException;
 import java.util.*;
@@ -33,19 +34,18 @@ public class S3Service {
         final String key = directoryPath + generateImageFileName(image);
         final S3Client s3Client = awsConfig.getS3Client();
 
-        Map<String, String> objectMetadata = new HashMap<>();
-        objectMetadata.put("Content-Type", image.getContentType());
 
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
-                .metadata(objectMetadata)
+                .contentType(image.getContentType())
+                .contentDisposition("inline")
                 .build();
 
         RequestBody requestBody = RequestBody.fromBytes(image.getBytes()); // 이미지를 바이트코드로 바꿔서 RequestBody에 넣어줌
-        s3Client.putObject(request, requestBody);
+        PutObjectResponse response = s3Client.putObject(request, requestBody);
 
-        return key;
+        return "https://" + bucketName + ".s3." + awsConfig.getRegion().toString() + ".amazonaws.com/" + key;
     }
 
     // 파일 이름을 UUID로 만드는 메서드
