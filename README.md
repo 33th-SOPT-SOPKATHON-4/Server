@@ -1,3 +1,68 @@
+
+## 💢서비스 이름 및 간단한 소개
+주변 눈치를 보며 겸손해야 하는 이들에게는 자랑의 창구를, 다른 이들의 자랑을 보며 부정적 마음을 가지는 이들에게는 마음껏 부러움을 표출할 수 있는 공간을 마련해주는 서비스, 흥!
+
+## 😠주요기능
+1) 오늘 하루 자랑할만한 일을 익명으로 공유
+2) 타 유저는 반응을 ‘좋아요’ 대신 ‘질투나요’ 버튼을 통해 감정 표출
+3) 타 유저가 공유한 자랑에 질투하기를 3번 반응 → 유저가 자랑할 수 있는 티켓 1개 생성
+4) 유저가 공유한 자랑들, 각 자랑거리 당 ‘질투나요’ 횟수 모아보기.
+<br><br>
+
+## ⚒️ 기술 스택
+**언어**
+- Java
+
+**프레임워크**
+- Spring Boot
+
+**데이터베이스**
+- MySQL
+
+**툴**
+- intellij, datagrip, postman
+<br><br>
+
+## ✏️ 팀원 역할 분담
+
+<h2> 😱개발자들 </h2>
+
+<table align="center">
+    <tr align="center">
+        <td style="min-width: 150px;">
+            <a href="https://github.com/mmihye">
+              <img src="https://avatars.githubusercontent.com/u/92644651?v=4" width="200" alt="깃허브계정-프로필사진">
+              <br />
+              <b>mmihye</b>
+            </a>
+        </td>
+      <td style="min-width: 150px;">
+            <a href="https://github.com/ChaeAg">
+              <img src="https://avatars.githubusercontent.com/u/109871579?v=4" width="200" alt="깃허브계정-프로필사진">
+              <br />
+              <b>ChaeAg</b>
+            </a>
+        </td>
+    </tr>
+    <tr align="center">
+        <td>
+            석미혜 <br/>
+      </td>
+       <td>
+            이채은 <br/>
+      </td>
+    </tr>
+    <tr align="center">
+        <td>
+            로그인 및 회원가입 API<br/>질투나요 누르기 API<br/>유저 정보 조회API<br/>
+      </td>
+       <td>
+            메인 게시물 조회 API<br/>게시물 작성 API<br/>
+      </td>
+    </tr>
+</table>
+<br><br>
+
 ## Git Convention
 
 ### 🔹Commit Convention
