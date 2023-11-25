@@ -1,6 +1,5 @@
 package org.sopkaton.Project.dto.response;
 
-import org.sopkaton.Project.domain.Post;
 import org.sopkaton.Project.domain.User;
 
 import java.util.List;
@@ -10,10 +9,10 @@ public record UserPostGetResponse(
     String nickname,
     int ticketCount,
     int dislikeCount,
-    List<Post> postList
+    List<PostGetResponse> postList
 
 ){
-    public static UserPostGetResponse of(User user, List<Post> postList){
+    public static UserPostGetResponse of(User user, List<PostGetResponse> postList){
         return new UserPostGetResponse(
                 user.getSsaId(),
                 user.getNickname(),

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.sopkaton.Project.domain.Post;
 import org.sopkaton.Project.domain.User;
 import org.sopkaton.Project.domain.UserPostInteractions;
+import org.sopkaton.Project.dto.response.PostGetResponse;
 import org.sopkaton.Project.external.S3Service;
 import org.sopkaton.Project.repository.PostRepository;
 import org.sopkaton.Project.repository.UserPostInteractionsRepository;
@@ -26,7 +27,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final UserPostInteractionsRepository userPostInteractionsRepository;
 
-    public Post createPost(String ssaId, String postContent, MultipartFile postImg) throws Exception {
+    public PostGetResponse createPost(String ssaId, String postContent, MultipartFile postImg) throws Exception {
         String imgUrl = s3Service.uploadImage("post/", postImg);
         String createdDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
@@ -40,11 +41,13 @@ public class PostService {
 
         postRepository.save(post);
 
-        return post;
+        return PostGetResponse.of(post);
     }
 
-    public List<Post> getPostsByUser(String ssaId) {
-        return postRepository.findByUser(userRepository.findById(ssaId).get());
+    public List<PostGetResponse> getPostsByUser(String ssaId) {
+        return postRepository.findByUser(userRepository.findById(ssaId).get()).stream()
+                .map(PostGetResponse::of)
+                .toList();
     }
 
     @Transactional
