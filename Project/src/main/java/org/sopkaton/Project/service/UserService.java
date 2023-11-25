@@ -3,6 +3,7 @@ package org.sopkaton.Project.service;
 import lombok.RequiredArgsConstructor;
 import org.sopkaton.Project.domain.Post;
 import org.sopkaton.Project.domain.User;
+import org.sopkaton.Project.dto.response.PostGetResponse;
 import org.sopkaton.Project.dto.response.UserGetResponse;
 import org.sopkaton.Project.dto.response.UserPostGetResponse;
 import org.sopkaton.Project.repository.NicknameGenerationJpaRepository;
@@ -47,7 +48,7 @@ public class UserService {
         // 리스트를 createdDateTime을 기준으로 내림차순으로 정렬
         Collections.sort(posts, dateTimeComparator);
 
-        return UserPostGetResponse.of(user, posts);
+        return UserPostGetResponse.of(user, posts.stream().map(PostGetResponse::of).toList());
     }
 
     private User createUser(String ssaId){

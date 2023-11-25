@@ -31,8 +31,7 @@ public class PostService {
 
     Random random = new Random();
 
-
-    public Post createPost(String ssaId, String postContent, MultipartFile postImg) throws Exception {
+    public PostGetResponse createPost(String ssaId, String postContent, MultipartFile postImg) throws Exception {
         String imgUrl = s3Service.uploadImage("post/", postImg);
         String createdDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
@@ -46,7 +45,7 @@ public class PostService {
 
         postRepository.save(post);
 
-        return post;
+        return PostGetResponse.of(post);
     }
 
     public List<PostGetResponse> getPostsByUser(String ssaId) {
@@ -59,7 +58,6 @@ public class PostService {
         }
 
         return postList.stream().map(PostGetResponse::of).toList();
-
     }
 
     @Transactional

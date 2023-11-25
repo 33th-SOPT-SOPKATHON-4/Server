@@ -5,11 +5,8 @@ import org.sopkaton.Project.common.ApiResponse;
 import org.sopkaton.Project.common.dto.Success;
 import org.sopkaton.Project.dto.request.DIslikePostRequest;
 import org.sopkaton.Project.service.PostService;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import org.sopkaton.Project.common.dto.Success;
 
 @RestController
 @RequiredArgsConstructor
