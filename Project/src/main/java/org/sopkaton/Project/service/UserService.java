@@ -26,9 +26,14 @@ public class UserService {
                 .orElseGet(() -> createUser(ssaId));
 
         return UserGetResponse.of(user);
-
     }
 
+    public UserGetResponse getUserBySsaId(String ssaId){
+        User user = userJpaRepository.findById(ssaId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다. ssaId = " + ssaId));
+
+        return UserGetResponse.of(user);
+    }
 
     private User createUser(String ssaId){
         User user = userJpaRepository.save(User.builder().ssaId(ssaId)
@@ -40,7 +45,6 @@ public class UserService {
     }
 
     private String makeNickname(){
-
         // Random 객체 생성
         Random random = new Random();
 
