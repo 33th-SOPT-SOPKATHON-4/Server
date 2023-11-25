@@ -27,6 +27,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final UserPostInteractionsRepository userPostInteractionsRepository;
 
+    @Transactional(readOnly = false)
     public PostGetResponse createPost(String ssaId, String postContent, MultipartFile postImg) throws Exception {
         String imgUrl = s3Service.uploadImage("post/", postImg);
         String createdDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
@@ -41,6 +42,9 @@ public class PostService {
 
         postRepository.save(post);
 
+        User user = userRepository.findById(ssaId).get();
+        user.updateTicketCount(user.getTicketCount() - 1);
+
         return PostGetResponse.of(post);
     }
 
@@ -50,13 +54,15 @@ public class PostService {
                 .toList();
     }
 
-    @Transactional
+    @Transactional(readOnly = false)
     public void dislikePosts(String ssaId, List<Long> postIdList){
         for(Long postId : postIdList){
             postRepository.updateDislikeCount(postId);
-            Post post = postRepository.findById(postId).orElseThrow(()-> new EntityNotFoundException("없는 게시물입니다."));
-            userRepository.updateDislikeCount(post.getUser().getSsaId());
-            UserPostInteractions postInteractions = userPostInteractionsRepository.save(UserPostInteractions.builder().postId(postId).ssaId(ssaId).build());
+            userRepository.updateDislikeCount(ssaId);
+            userPostInteractionsRepository.save(UserPostInteractions.builder().postId(postId).ssaId(ssaId).build());
         }
+        User user = userRepository.findById(ssaId).get();
+        user.updateTicketCount(user.getTicketCount() + (user.getDislikeCount() / 3));
+        user.updateDislikeCount(user.getDislikeCount() % 3);
     }
 }
