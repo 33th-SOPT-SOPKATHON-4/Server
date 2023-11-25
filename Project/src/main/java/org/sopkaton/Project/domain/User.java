@@ -24,4 +24,12 @@ public class User {
         this.ticketCount = ticketCount;
         this.dislikeCount = dislikeCount;
     }
+
+    public void updateTicketCount(int ticketCount){
+        this.ticketCount = ticketCount;
+    }
+
+    public void updateDislikeCount(int dislikeCount){
+        this.dislikeCount = dislikeCount;
+    }
 }
