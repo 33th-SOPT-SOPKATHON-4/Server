@@ -54,10 +54,10 @@ public class PostService {
 
     public List<PostGetResponse> getPostsByUser(String ssaId) {
         ArrayList<Post> postList = new ArrayList<>();
-        List<Long> postIdList = getRandomPostId(ssaId);
+        List<Post> randomPostList = getRandomPostId(ssaId);
 
-        for (Long postId : postIdList){
-            Post post = postRepository.findById(postId).orElseThrow( () -> new EntityNotFoundException("없는 게시물입니다."));
+        for (Post randomPost : randomPostList){
+            Post post = postRepository.findById(randomPost.getPostId()).orElseThrow( () -> new EntityNotFoundException("없는 게시물입니다."));
             postList.add(post);
         }
 
@@ -76,21 +76,23 @@ public class PostService {
         user.updateDislikeCount(user.getDislikeCount() % 3);
     }
 
-    private List<Long> getRandomPostId(String ssaId){
-        ArrayList<Long> postIdList = new ArrayList<>();
+    private ArrayList<Post> getRandomPostId(String ssaId){
+        ArrayList<Post> randomPostList = new ArrayList<>();
 
-        int postSize = postRepository.findAll().size();
+        List<Post> post = postRepository.findAll();
 
-        List<Long> userPostIdList = postRepository.findPostIdByUser(userRepository.findById(ssaId).get());
+        List<Post> userPostIdList = postRepository.findPostIdByUser(userRepository.findById(ssaId).get());
         List<Long> dislikePostList = userPostInteractionsRepository.findDislikePostByUser(ssaId);
 
-        while(postIdList.size()<12){
-            Long randomInt = random.nextLong(postSize)+1;
-            if (!userPostIdList.contains(randomInt) && !postIdList.contains(randomInt) &&!dislikePostList.contains(randomInt)) {
-                postIdList.add(randomInt);
+        while(randomPostList.size()<12){
+            int randomInt = random.nextInt(post.size())+1;
+            if (!userPostIdList.contains(post.get(randomInt)) && !randomPostList.contains(post.get(randomInt))
+                    &&!dislikePostList.contains(post.get(randomInt).getPostId())) {
+                randomPostList.add(post.get(randomInt));
             }
         }
 
-        return postIdList;
+        return randomPostList;
     }
+
 }
