@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -38,6 +40,14 @@ public class PostService {
     }
 
     public List<Post> getPostsByUser(String ssaId) {
-        return postRepository.findByUser(userRepository.findById(ssaId).get());
+        List<Post> posts = postRepository.findByUser(userRepository.findById(ssaId).get());
+
+        // createdDateTime을 기준으로 내림차순으로 정렬하는 Comparator 생성
+        Comparator<Post> dateTimeComparator = Comparator.comparing(Post::getCreatedDateTime).reversed();
+
+        // 리스트를 createdDateTime을 기준으로 내림차순으로 정렬
+        Collections.sort(posts, dateTimeComparator);
+
+        return posts;
     }
 }
