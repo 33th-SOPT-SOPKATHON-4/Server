@@ -23,6 +23,12 @@
 - intellij, datagrip, postman
 <br><br>
 
+## 아키텍처 구조도
+![image](https://github.com/33th-SOPT-SOPKATHON-4/Server/assets/109871579/75a56fb1-dabe-413d-8f11-26cacf898e15)
+
+### 서버 배포 Base URL
+http://54.180.48.16:8080
+
 ## ✏️ 팀원 역할 분담
 
 <h2> 😱개발자들 </h2>
@@ -174,34 +180,57 @@
 ## 폴더 구조
 
 ```sql
-├── 📂 common
-|   ├── 📂 dto
-|   └── 📂 exception
-├── 📂 config
-│   └──
-├── 📂 controller
-│   ├── 
-│   └── 
-├── 📂 domain
-│   ├── 
-│   └── 
-├── 📂 dto
-│   ├── 📂 request
-|   │   ├── 
-|   │   └── 
-│   └── 📂 response
-│       ├── 📂 
-|       │   ├── 
-|       │   └── 
-│       ├── 📂 
-|       │   ├── 
-|       │   └── 
-│       └── 
-├── 📂 repository
-│   ├── 
-│   └── 
-├── 📂 service
-│   ├── 
-│   └── 
-└──
+├── ProjectApplication.java
+├── common
+│   ├── ApiResponse.java
+│   ├── dto
+│   │   ├── Error.java
+│   │   └── Success.java
+│   └── exception
+│       ├── CustomException.java
+│       └── NotFoundException.java
+├── config
+│   ├── AWSConfig.java
+│   └── JpaAuditingConfig.java
+├── controller
+│   ├── HealthCheckController.java
+│   ├── PostController.java
+│   └── UserController.java
+├── domain
+│   ├── NicknameGeneration.java
+│   ├── Post.java
+│   ├── User.java
+│   └── UserPostInteractions.java
+├── dto
+│   ├── request
+│   │   └── DIslikePostRequest.java
+│   └── response
+│       ├── PostGetResponse.java
+│       ├── UserGetResponse.java
+│       └── UserPostGetResponse.java
+├── external
+│   └── S3Service.java
+├── repository
+│   ├── NicknameGenerationJpaRepository.java
+│   ├── PostRepository.java
+│   ├── UserJpaRepository.java
+│   ├── UserPostInteractionsRepository.java
+│   └── UserRepository.java
+└── service
+    ├── PostService.java
+    └── UserService.java
 ```
+
+## 로컬 실행 방법
+1. 깃허브에서 프로젝트를 클론 받는다.
+   ```
+   git clone https://github.com/33th-SOPT-SOPKATHON-4/Server.git
+   ```
+2. 프로젝트를 빌드한다.
+   ```
+   ./gradlew clean build -x test
+   ```
+3. /build/libs 경로로 이동해서 빌드파일을 실행한다.
+   ```
+   nohup java -jar Project-0.0.1-SNAPSHOT.jar &
+   ```
