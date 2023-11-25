@@ -11,4 +11,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Modifying
     @Query("UPDATE User u SET u.dislikeCount =u.dislikeCount+1 WHERE u.ssaId=:ssaId")
     void updateDislikeCount(@Param("ssaId") String ssaId);
+
+
 }
